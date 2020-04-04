@@ -18,6 +18,9 @@ async function main() {
 
   const schema = await buildSchema({
     resolvers: [MeResolver, RegisterResolver, LoginResolver],
+    authChecker: ({ context: { req } }) => {
+      return !!req.session.userId; // or false if access is denied)
+    },
   });
 
   const apolloServer = new ApolloServer({
